@@ -1,5 +1,5 @@
 import pg from "pg";
-import { connectionString } from "pg/lib/defaults";
+// import { connectionString } from "pg/lib/defaults";
 
 export function connect(){
     const dbConnectionString = process.env.NEXT_PUBLIC_DATABASE_URL;

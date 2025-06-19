@@ -10,29 +10,53 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
+export default async function MenuDetailsPage({ params }) {
+    const { menudetails } = await params;
 
-export default async function menuDetailsPage({ params }) {
-    
-    const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [params.menudetails])).rows;
-    
+
+    //    const result = await db.query( `SELECT * FROM food_items[0] WHERE route_name = $1`,
+
+    // );
+    const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
+    // console.log("Food Items:", food_items[0][0]);
+
     async function insertData(quantity, total_price, food_id,) {
         "use server"
-        const { userId } = await auth(); 
+        const { userId } = await auth();
         console.log("UserId:", userId);
         await db.query(
             `INSERT INTO cart (quantity,total_price,food_id,user_id) 
              VALUES ($1, $2, $3,$4)`,
-            [quantity, total_price, food_id,userId]
+            [quantity, total_price, food_id, userId]
         );
         revalidatePath('/checkout');
         redirect('/checkout');
-        
+
     }
-    
-    
-  
+
     return (
         <>
+            <div className="pt-8 ">
+
+                <Link href="/menu" className="font-semibold hover:underline ml-20 mr-2 ">
+                    Home
+                </Link>
+                /
+                <Link href="/menu" className="font-semibold hover:underline  ml-2 mr-2 ">
+                Products
+                </Link>
+                /
+                  <Link href="/menu" className="font-semibold hover:underline  ml-2 mr-2 ">
+                My Shelf
+                </Link>
+                /
+                   <Link href="" className="font-light hover:underline  ml-2 mr-2 ">
+                {food_items[0].prod_name}
+                </Link>
+                
+            </div>
+
+
             <div className="p-8 space-y-8">
                 <div className="flex flex-row ">
                     <div className="w-[50%]">
@@ -40,7 +64,7 @@ export default async function menuDetailsPage({ params }) {
                             className="rounded-lg hover:scale-105 duration-300"
                             src={food_items[0].img_src}
                             alt={food_items[0].prod_name}
-                            width={1000}
+                            width={500}
                             height={1000}
                         />
                     </div>
@@ -49,22 +73,26 @@ export default async function menuDetailsPage({ params }) {
                         <h2 className="text-4xl font-bold">£{food_items[0].unit_price}</h2>
                         <div className="flex flex-col">
 
-                        <Quantity 
-                        product={food_items[0]}
-                        handleBuyNow={insertData}
-                        />
+                            <Quantity
+                                product={food_items[0]}
+                                handleBuyNow={insertData}
+                            />
                             <br />
-                            <button type="sumbit" className="btn bg-white border-black "><CiShoppingCart /> Add to Cart</button>
+                            <button type="submit" className="btn bg-white border-1 text-black w-full h-12 flex items-center justify-center gap-2">
+                                <span>Add to Cart</span>
+                                <CiShoppingCart className="w-6 h-6" />
+                            </button>
                         </div>
-
+                        <br />
+                        <h2 className="text-sm font-extralight">Share</h2>
                         <div className="flex flex-row space-x-2 mt-4">
-                            <a href="https://www.facebook.com/XdW2Q4yhuQxkkc5x " className="text-2xl">
+                            <a href="https://www.facebook.com/XdW2Q4yhuQxkkc5x " className="text-xl">
                                 <ImFacebook2 />
                             </a>
-                            <a href="https://www.instagram.com/hetalshomekitchen/" className="text-2xl">
+                            <a href="https://www.instagram.com/hetalshomekitchen/" className="text-xl">
                                 <BsInstagram />
                             </a>
-                            <a href="https://api.whatsapp.com/send/?phone=%2B447928042962&text&type=phone_number&app_absent=0" className="text-2xl">
+                            <a href="https://api.whatsapp.com/send/?phone=%2B447928042962&text&type=phone_number&app_absent=0" className="text-xl">
                                 <RiWhatsappFill />
                             </a>
                         </div>
@@ -76,6 +104,8 @@ export default async function menuDetailsPage({ params }) {
                     </div>
                 </div>
             </div>
+
         </>
+
     );
 }

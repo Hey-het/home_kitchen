@@ -8,6 +8,7 @@ import Link from "next/link";
 export default async function menuPage() {
     const foodItems = (await db.query(`SELECT * FROM food_items`)).rows
     
+    
     return (
         <>
             <Serch />

@@ -3,7 +3,10 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { useState } from "react";
 
 export default function CartPage({ orderSumbit }) {
+    
     const [quantity, setQuantity] = useState(1);
+    
+
     function incrementQuantity() {
         setQuantity(quantity + 1);
     }
@@ -17,10 +20,7 @@ export default function CartPage({ orderSumbit }) {
         sum = Number(sum) + Number(orderSumbit[i].total_price);
 
     }
-
-    // console.log(sum);
-    // console.log(orderSumbit[0].total_price);
-    // console.log(orderSumbit[1].total_price);
+    console.log(orderSumbit[1].total_price);
     return (
         <>
             <h1 className="text-4xl ml-24 font-bold ">Shopping Cart</h1>
@@ -32,7 +32,7 @@ export default function CartPage({ orderSumbit }) {
                             className="flex flex-row justify-between border-b border-gray-200"
                         >
                             <div className="flex flex-col">
-                                <h1>item</h1>
+                                <br/>
                                 <div className="flex flex-row">
                                     <img
                                         src={order.img_src}
@@ -69,34 +69,37 @@ export default function CartPage({ orderSumbit }) {
                     ))
                     }
                 </div>
-                <div className="max-w-md  mx-auto bg-white shadow-lg rounded-lg border border-gray-200 p-4">
+                     <div className="max-w-md  mx-auto bg-white shadow-lg rounded-lg border border-gray-200 p-4">
 
-                    <div className=" flex flex-row justify-between border-b border-stone-950">
+                        <div className=" flex flex-row justify-between border-b border-stone-950">
 
-                        <h2 className="text-lg font-bold mb-4">Subtotal  </h2>
-                        <h2 className="text-lg mb-4"> £{sum}</h2>
+                            <h2 className="text-lg font-bold mb-4">Subtotal  </h2>
+                            <h2 className="text-lg mb-4"> £{sum}</h2>
 
-                    </div>
-                    <br />
-                    <br />
-                    <div className="flex flex-row border-b border-gray-200 space-x-4">
+                        </div>
+                        <br />
+                        <br />
+                        <div className="flex flex-row border-b border-gray-200 space-x-4">
 
                         <h2 className="text-lg font-bold mb-4 ">Shipping </h2>
                         <p className="text-lg mb-4">Will be Calculated in Checkout</p>
 
-                    </div>
-                    <br />
-                    <br />
-                    <div className="flex flex-row justify-between">
+                        </div>
+                        <br />
+                     <br />
+                     <div className="flex flex-row justify-between">
 
                         <h2 className="text-lg font-bold mb-4">Total  £{sum}</h2>
                         <h2 className="text-lg mb-4">£{sum}</h2>
 
-                    </div>
-                    <br />
+                     </div>
+                     <br />
 
-                    <button
-                        className="btn bg-black text-white w-full h-12">Checkout</button>
+                         <button 
+                            type="submit"
+                            className="btn bg-black text-white w-full h-12">
+                            Checkout
+                        </button>
                 </div>
 
             </div>
