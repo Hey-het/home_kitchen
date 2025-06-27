@@ -11,7 +11,7 @@ export default async function menuPage() {
     
     return (
         <>
-            <Serch />
+            {/* <Serch /> */}
             <div className="flex flex-col">
                 <div className="m-10">
                     <h1 className="text-5xl font-bold mb-4" >Explore Products</h1>

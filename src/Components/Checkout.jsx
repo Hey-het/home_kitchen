@@ -67,21 +67,22 @@ export default function Checkout({ handelSumbit, orderSumbit }) {
                                 <div className="ml-10 text-center"><p className="text-1xl font-bold text-gray-800"> £{order.unit_price}</p></div>
                             </div>
                             <div className=" border-b border-gray-200">
-                                <br/>
+                                <br />
 
                                 <p className="text-xl font-semibold text-gray-600">Quantity: {order.quantity}</p>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div className="border-b border-gray-200">
+                            </div>
+                            <br />
+                            <br />
+                            <div className="border-b border-gray-200">
                                 <p className="text-xl font-semibold text-gray-600">Total:  £{order.total_price}</p>
-                                </div>
-
-                           
+                            </div>
                         </div>
-
-
                     ))}
+                    <button
+                        type="submit"
+                        className="btn bg-black text-white w-full h-12">
+                        Checkout
+                    </button>
                 </div>
 
             </div>

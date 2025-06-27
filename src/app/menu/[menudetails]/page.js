@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
-export default async function MenuDetailsPage({ params }) {
+export default async function MenuDetailsPage({ params,  }) {
     const { menudetails } = await params;
 
 
@@ -31,6 +31,20 @@ export default async function MenuDetailsPage({ params }) {
         );
         revalidatePath('/checkout');
         redirect('/checkout');
+
+    }
+      async function insertCart(quantity, total_price, food_id,) {
+        "use server"
+        const { userId } = await auth();
+        console.log("UserId:", userId);
+        await db.query(
+            `INSERT INTO cart (quantity,total_price,food_id,user_id) 
+             VALUES ($1, $2, $3,$4)`,
+            [quantity, total_price, food_id, userId]
+        );
+        // revalidatePath('/c');
+        // redirect('/checkout');
+        console.log("Data inserted successfully");
 
     }
 
@@ -75,13 +89,15 @@ export default async function MenuDetailsPage({ params }) {
 
                             <Quantity
                                 product={food_items[0]}
-                                handleBuyNow={insertData}
+                                // handleBuyNow={insertData}
+                                addToCart={insertCart}
                             />
                             <br />
+{/*                             
                             <button type="submit" className="btn bg-white border-1 text-black w-full h-12 flex items-center justify-center gap-2">
                                 <span>Add to Cart</span>
                                 <CiShoppingCart className="w-6 h-6" />
-                            </button>
+                            </button> */}
                         </div>
                         <br />
                         <h2 className="text-sm font-extralight">Share</h2>

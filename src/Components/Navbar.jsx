@@ -17,17 +17,18 @@ export default async function NavBar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Left side nav */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-lg font-semibold text-gray-800 hover:text-blue-600">
+          <Link href="/" className="font-semibold hover:underline  ml-2 mr-2 ">
             Home
           </Link>
-          <Link href="/menu" className="text-lg font-semibold text-gray-800 hover:text-blue-600">
-            Menu
+          <Link href="/menu" className=" font-semibold hover:underline  ml-2 mr-2 ">
+            Products
           </Link>
         </div>
 
         {/* Right side nav */}
         <div className="flex items-center gap-4">
           {/* Cart */}
+          <Link href="/cart">
           <div className="relative group">
             <button className="relative p-2 hover:text-gray-700 transition">
               <svg
@@ -42,22 +43,9 @@ export default async function NavBar() {
                   strokeWidth="2"
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3c-.6.6-.2 1.7.7 1.7H17m0 0a2 2 0 100 4 2 2 0 000-4m-8 2a2 2 0 11-4 0 2 2 0 014 0" />
               </svg>
-              <span className="absolute -top-1 -right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                8
-              </span>
             </button>
-
-            {/* Cart dropdown */}
-            <div className="absolute right-0 z-20 mt-2 hidden w-64 rounded-md border bg-white p-4 shadow-md group-hover:block transition">
-              <p className="text-lg font-semibold">8 Items</p>
-              <p className="text-sm text-gray-600">Subtotal: $999</p>
-              <Link href="/cart">
-                <button className="mt-3 w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 text-sm">
-                  View Cart
-                </button>
-              </Link>
-            </div>
           </div>
+          </Link>
 
           {/* Profile */}
           <div className="relative group">

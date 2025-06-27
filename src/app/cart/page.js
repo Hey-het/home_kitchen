@@ -3,8 +3,9 @@ import { db } from "@/utils/dbConnection";
 import { auth } from "@clerk/nextjs/server";
 
 
-export default async function cartPage(){
+export default async function cartPage(profile){
     const { userId } = await auth();
+    let foodId ;
     const cartItems = (await db.query(`
             SELECT 
                 cart.id,
@@ -17,12 +18,38 @@ export default async function cartPage(){
             FROM cart
             JOIN food_items
             ON cart.food_id = food_items.food_id 
-            WHERE cart.user_id=$1`,[userId])).rows;
+            WHERE cart.user_id=$1`, [userId])).rows;
         
-    return(
+        async function deleteCartItem(id) {
+            "use server";
+                    await db.query(
+                        `DELETE FROM cart WHERE id= $1`,
+                        [id]
+                    );
+                    }
+
+    async function placeOrderOnServer(items){
+            "use server";
+            await db.query(`
+                INSERT INTO customer(full_name, email, phone_number, user_id)
+                VALUES($1, $2, $3, $4)`, [items.fullName, items.email, items.phone, userId]);
+
+            await db.query(`DELETE FROM cart WHERE user_id = $1`, [userId]);
+
+            // console.log(items.fullName, items.email, items.phone);
+            
+        };  
+ 
+     
+
+    return (
         <>
-        <CartPage orderSumbit={cartItems}/>
-        
+            <CartPage orderSumbit={cartItems} 
+            // quantityUpdate={quantityUpdate}
+            placeOrder={placeOrderOnServer}
+            deleteItem={deleteCartItem}
+            />
+
         </>
     );
 }
