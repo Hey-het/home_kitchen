@@ -28,28 +28,33 @@ export default function homePage() {
 
       <div className="join mt-8 ml-24 space-x-4 flex justify-start items-center">
         <div className="flex flex-col group border-transparent w-fit  p-4 rounded-lg transition-all max-w-[400px]">
+          <Link href="/menu">
           <img
             src="https://media.istockphoto.com/id/1458973879/photo/rajasthani-traditional-cuisine-dal-baati.jpg?s=612x612&w=0&k=20&c=bBspCwj57CtdD0m66dZpNpNU_Dou3o7l1PscMUsijQc="
             alt="Image 1"
             className=" max-w-[400px]  max-h-[500px] object-cover group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 rounded-lg"
           />
+          </Link>
           <h3 className="mt-2 text-2xl">Dalbati</h3>
           <h3 className="text-xl font-medium text-gray-600">£6</h3>
         </div>
 
         <div className="flex flex-col group  border-transparent w-fit p-4 rounded-lg transition-all  max-w-[400px]">
+          {/* <Link href="/menu"> */}
+          
           <img
             src="https://media.istockphoto.com/id/1327433011/photo/pav-bhaji-indian-street-food-bharuch-gujarat-india.jpg?s=612x612&w=0&k=20&c=R_Nl3Ig6qTNMidQkjXH0It8MINDJY-C5GMiIv-HxO04="
             alt="Image 2"
             className="  max-w-[400px]  max-h-[400px] object-cover group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 rounded-lg"
           />
+          {/* </Link> */}
           <h3 className="mt-2 text-2xl">Pavbhaji</h3>
           <h3 className="text-xl font-medium text-gray-600">£5</h3>
         </div>
       </div>
-      <Link href="/menu" >
+      {/* <Link href="/menu" > */}
         <p className="text-3xl p-20">Explore Products </p>
-      </Link>
+      {/* </Link> */}
     </>
   );
 }

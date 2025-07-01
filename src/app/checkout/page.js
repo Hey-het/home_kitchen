@@ -45,7 +45,9 @@ export default async function createPage({ params}) {
 
     return (
         <>
-            <Checkout handelSumbit={handleSumbitData} orderSumbit={cartItems}
+            <Checkout 
+            // handelSumbit={handleSumbitData} 
+            orderSumbit={cartItems}
             />
             
            

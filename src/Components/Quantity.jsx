@@ -19,7 +19,7 @@ export default function Quantity({ product, handleBuyNow ,addToCart }) {
 
     // Pass data dynamically to the parent function
     function handleButtonClick() {
-        handleBuyNow(quantity, totalPrice, product.food_id);
+        // handleBuyNow(quantity, totalPrice, product.food_id);
     };
 
   async function handleAddToCart() {

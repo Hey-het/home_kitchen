@@ -25,7 +25,7 @@ export default async function MenuDetailsPage({ params,  }) {
         const { userId } = await auth();
         console.log("UserId:", userId);
         await db.query(
-            `INSERT INTO cart (quantity,total_price,food_id,user_id) 
+            `INSERT INTO food_cart (quantity,total_price,food_id,user_id) 
              VALUES ($1, $2, $3,$4)`,
             [quantity, total_price, food_id, userId]
         );
@@ -33,7 +33,7 @@ export default async function MenuDetailsPage({ params,  }) {
         redirect('/checkout');
 
     }
-      async function insertCart(quantity, total_price, food_id,) {
+      async function insertCart(quantity, total_price, food_id) {
         "use server"
         const { userId } = await auth();
         console.log("UserId:", userId);

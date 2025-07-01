@@ -1,9 +1,12 @@
+
 "use client";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useState } from "react";
 
-export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
+export default function CartPage({ orderSumbit, placeOrder, deleteItem, quantityUpdate }) {
   const [cartItems, setCartItems] = useState(orderSumbit);
+  const [quantity, setQuantity] = useState(orderSumbit.map(item => item.quantity || 1));
+  // const totalPrice = orderSumbit.reduce((acc, item) => acc + item.total_price, 0);
   const [showForm, setShowForm] = useState(false);
   const [profile, setProfile] = useState({
     id: "",
@@ -13,24 +16,56 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
   });
 
   function handleDeleteItem(id) {
-    // Filter out the item with the given id
     const updatedCartItems = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCartItems);
-    deleteItem(id); // Call the server function to delete item
+    deleteItem(id);
   }
 
-  function incrementQuantity() {
-    quantityUpdate();
-  }
+  const incrementQuantity = (index) => {
+    const updatedItems = [...cartItems];
+    const item = updatedItems[index];
 
-  function decrementQuantity() {
-    // Add logic based on your state
-  }
+    item.quantity = Number(item.quantity || 1) + 1; // ✅ handles missing quantity
+    item.total_price = item.unit_price * item.quantity;
 
+    setCartItems(updatedItems); // ✅ updates state, UI will re-render
+
+    quantityUpdate({
+      id: item.id,
+      quantity: item.quantity,
+      total_price: item.total_price,
+    });
+  };
+
+const decrementQuantity = (index) => {
+  const updatedItems = [...cartItems];
+  const item = updatedItems[index];
+
+  if ((item.quantity || 1) > 1) {
+    item.quantity = item.quantity - 1;
+    item.total_price = item.unit_price * item.quantity;
+
+    setCartItems(updatedItems);
+
+    quantityUpdate({
+      id: item.id,
+      quantity: item.quantity,
+      total_price: item.total_price,
+    });
+  }
+};
+
+
+  // let sum = 0;
+  // for (let i = 0; i < cartItems.length; i++) {
+  //   sum += Number(cartItems[i].total_price); // ✅ No * quantity[i]
+  // }
   let sum = 0;
   for (let i = 0; i < cartItems.length; i++) {
-    sum += Number(cartItems[i].total_price);
+    const item = cartItems[i];
+    sum += item.unit_price * (item.quantity || 1);
   }
+
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -38,14 +73,11 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
   }
 
   function handlePlaceOrder(e) {
-    // e.preventDefault;
-    // console.log("Order Placed with Details:", profile, cartItems);
-    // Clear cart after order placed
-    setShowForm(false); // Hide form
-    placeOrder(profile, cartItems); // Call the server function to place order
-    setCartItems([]); 
+    e.preventDefault(); // prevent default form submission
+    setShowForm(false);
+    placeOrder(profile, cartItems);
+    setCartItems([]);
   }
-  
 
   return (
     <>
@@ -53,7 +85,7 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
       <div className="flex flex-row space-x-4 m-10">
         {/* Cart Items */}
         <div className="w-[60%] border rounded-lg shadow-lg p-6 bg-white m-10">
-          {cartItems.map((order) => (
+          {cartItems.map((order, index) => (
             <div
               key={order.id}
               className="flex flex-row justify-between border-b border-gray-200"
@@ -73,6 +105,7 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
                 <h1>Price</h1>
                 <p className="text-1xl font-bold text-gray-800">
                   £{order.unit_price}
+
                 </p>
               </div>
               <div className="flex flex-col">
@@ -82,16 +115,22 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
                   role="group"
                   aria-label="Button group border "
                 >
-                  <button className="btn btn-outline" onClick={decrementQuantity}>
+                  <button
+                    className="btn btn-outline"
+                  onClick={() => decrementQuantity(index)}
+                  >
                     -
                   </button>
                   <input
                     className="input input-bordered text-center w-16"
                     type="number"
-                    value={order.quantity}
+                    value={cartItems[index].quantity || 1}
                     readOnly
                   />
-                  <button className="btn btn-outline" onClick={incrementQuantity}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() => incrementQuantity(index)}
+                  >
                     +
                   </button>
                 </div>
@@ -100,6 +139,8 @@ export default function CartPage({ orderSumbit,placeOrder,deleteItem }) {
                 <h1>Total</h1>
                 <p className="text-xl font-semibold text-gray-600">
                   £{order.total_price}
+                  {/* £{(order.total_price * quantity[index]).toFixed(2)} */}
+
                 </p>
               </div>
               <div>
