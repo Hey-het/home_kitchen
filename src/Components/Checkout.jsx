@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
 export default function Checkout({ placeOrder, orderSumbit }) {
+    console.log(orderSumbit)
     const [cartItems, setCartItems] = useState(orderSumbit)
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [profile, setProfile] = useState({
@@ -27,8 +28,7 @@ export default function Checkout({ placeOrder, orderSumbit }) {
         placeOrder(profile, cartItems);
         setCartItems([]);
         setOrderSuccess(true);
-        // console.log("Form Data:", profile);       // ✅ This will log the form input values
-        // console.log("Cart Items:", cartItems);
+      
     }
 
     let sum = 0;

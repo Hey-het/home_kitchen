@@ -1,7 +1,8 @@
 import CartPage from "@/Components/Cart";
+import Checkout from "@/Components/Checkout";
 import { db } from "@/utils/dbConnection";
 import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
+
 
 
 export default async function cartPage(profile) {
@@ -20,6 +21,7 @@ export default async function cartPage(profile) {
             JOIN food_items
             ON cart.food_id = food_items.food_id 
             WHERE cart.user_id=$1`, [userId])).rows;
+
 
     async function deleteCartItem(id) {
         "use server";
@@ -53,10 +55,12 @@ export default async function cartPage(profile) {
 
     return (
         <>
-            <CartPage orderSumbit={cartItems}
+            <CartPage 
+                orderSumbit={cartItems}
                 quantityUpdate={quantityUpdate}
                 placeOrder={placeOrderOnServer}
                 deleteItem={deleteCartItem}
+        
             />
 
         </>

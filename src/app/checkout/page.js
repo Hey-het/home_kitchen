@@ -12,20 +12,20 @@ export default async function createPage({ params}) {
         await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [params.menudetails])
     ).rows;
 
-    const food_cartItems = (await db.query(`
-        SELECT 
-            food_cart.id,
-            food_cart.quantity,
-            food_cart.total_price,
-            food_cart.user_id,
-            food_items.img_src,
-            food_items.unit_price,
-            food_items.prod_name
-        FROM food_cart
-        JOIN food_items
-        ON food_cart.food_id = food_items.food_id 
-        WHERE food_cart.user_id=$1`,[userId])).rows;
     
+    const cartItems = (await db.query(`
+            SELECT 
+                cart.id,
+                cart.quantity,
+                cart.total_price,
+                cart.user_id,
+                food_items.img_src,
+                food_items.unit_price,
+                food_items.prod_name
+            FROM cart
+            JOIN food_items
+            ON cart.food_id = food_items.food_id 
+            WHERE cart.user_id=$1`, [userId])).rows;
    
      async function handleSumbitData(items) {
         "use server";
@@ -37,13 +37,11 @@ export default async function createPage({ params}) {
 
     };
 
-   
-
     return (
         <>
             <Checkout 
             placeOrder={handleSumbitData}
-            orderSumbit={food_cartItems}
+            orderSumbit={cartItems}
 
             />
             
