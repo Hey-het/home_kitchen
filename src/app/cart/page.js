@@ -51,8 +51,6 @@ export default async function cartPage(profile) {
         // revalidatePath('/cart');
     }
 
-
-
     return (
         <>
             <CartPage orderSumbit={cartItems}

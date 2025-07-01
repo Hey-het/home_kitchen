@@ -19,7 +19,7 @@ export default function Quantity({ product, handleBuyNow ,addToCart }) {
 
     // Pass data dynamically to the parent function
     function handleButtonClick() {
-        // handleBuyNow(quantity, totalPrice, product.food_id);
+        handleBuyNow(quantity, totalPrice, product.food_id);
     };
 
   async function handleAddToCart() {
@@ -61,7 +61,7 @@ export default function Quantity({ product, handleBuyNow ,addToCart }) {
                 <br />
                 <button
                     className="btn bg-black text-white w-full h-12"
-                    // onClick={handleButtonClick}
+                    onClick={handleButtonClick}
                 >
                     BUY Now
                 </button>

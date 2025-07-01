@@ -10,13 +10,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
-export default async function MenuDetailsPage({ params,  }) {
+export default async function MenuDetailsPage({ params}) {
     const { menudetails } = await params;
+    // console.log(params)
+    // console.log({menudetails})
 
 
-    //    const result = await db.query( `SELECT * FROM food_items[0] WHERE route_name = $1`,
-
-    // );
     const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
     // console.log("Food Items:", food_items[0][0]);
 
@@ -65,7 +64,7 @@ export default async function MenuDetailsPage({ params,  }) {
                 </Link>
                 /
                    <Link href="" className="font-light hover:underline  ml-2 mr-2 ">
-                {food_items[0].prod_name}
+                    {food_items[0].prod_name}
                 </Link>
                 
             </div>
@@ -89,7 +88,7 @@ export default async function MenuDetailsPage({ params,  }) {
 
                             <Quantity
                                 product={food_items[0]}
-                                // handleBuyNow={insertData}
+                                handleBuyNow={insertData}
                                 addToCart={insertCart}
                             />
                             <br />

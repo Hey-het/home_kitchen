@@ -1,6 +1,8 @@
 import Checkout from "@/Components/Checkout";
 import { db } from "@/utils/dbConnection";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 
 export default async function createPage({ params}) {
@@ -10,44 +12,39 @@ export default async function createPage({ params}) {
         await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [params.menudetails])
     ).rows;
 
-    const cartItems = (await db.query(`
+    const food_cartItems = (await db.query(`
         SELECT 
-            cart.id,
-            cart.quantity,
-            cart.total_price,
-            cart.user_id,
+            food_cart.id,
+            food_cart.quantity,
+            food_cart.total_price,
+            food_cart.user_id,
             food_items.img_src,
             food_items.unit_price,
             food_items.prod_name
-        FROM cart
+        FROM food_cart
         JOIN food_items
-        ON cart.food_id = food_items.food_id 
-        WHERE cart.user_id=$1`,[userId])).rows;
+        ON food_cart.food_id = food_items.food_id 
+        WHERE food_cart.user_id=$1`,[userId])).rows;
     
-    // console.log(cartItems[0]);
-    
-    async function handleSumbitData(formValues) {
+   
+     async function handleSumbitData(items) {
         "use server";
-        const formData = {
-            full_name: formValues.get("full_name"),
-            email: formValues.get("email"),
-            phone_number: formValues.get("phone_number"),
-        };
+        await db.query(`
+                INSERT INTO customer(full_name, email, phone_number, user_id)
+                VALUES($1, $2, $3, $4)`, [items.fullName, items.email, items.phone, userId]);
 
-        await db.query(
-            `INSERT INTO customer(full_name, email, phone_number)
-             VALUES($1, $2, $3)`,
-            [formData.full_name, formData.email, formData.phone_number]
-        );
-    }
+        await db.query(`DELETE FROM food_cart WHERE user_id = $1`, [userId]);
+
+    };
 
    
 
     return (
         <>
             <Checkout 
-            // handelSumbit={handleSumbitData} 
-            orderSumbit={cartItems}
+            placeOrder={handleSumbitData}
+            orderSumbit={food_cartItems}
+
             />
             
            
