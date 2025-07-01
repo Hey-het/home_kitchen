@@ -2,6 +2,8 @@ import CartPage from "@/Components/Cart";
 import Checkout from "@/Components/Checkout";
 import { db } from "@/utils/dbConnection";
 import { auth } from "@clerk/nextjs/server";
+import NavBar from "@/Components/Navbar";
+
 
 
 
@@ -54,7 +56,9 @@ export default async function cartPage(profile) {
     }
 
     return (
-        <>
+        <>  
+            {/* <NavBar orderSumbit={cartItems} /> */}
+            
             <CartPage 
                 orderSumbit={cartItems}
                 quantityUpdate={quantityUpdate}
@@ -62,6 +66,8 @@ export default async function cartPage(profile) {
                 deleteItem={deleteCartItem}
         
             />
+            
+
 
         </>
     );

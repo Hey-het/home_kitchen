@@ -1,10 +1,11 @@
+import NavBar from "@/Components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function homePage() {
   return (
     <>
-
+      {/* <NavBar/> */}
       <div className="relative w-full h-[600px] ">
         <img
           src="https://cdn.sumup.store/shops/81731664/settings/th240/11f10fe2-e928-4c55-9da0-c1a9ebed8a68.jpeg"

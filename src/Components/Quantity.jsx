@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { CiShoppingCart } from "react-icons/ci";
+import toast from "react-hot-toast";
 
 
-export default function Quantity({ product, handleBuyNow ,addToCart }) {
-    
+export default function Quantity({ product, handleBuyNow, addToCart }) {
+
     const [quantity, setQuantity] = useState(1);
 
     const totalPrice = product.unit_price * quantity
@@ -22,13 +23,23 @@ export default function Quantity({ product, handleBuyNow ,addToCart }) {
         handleBuyNow(quantity, totalPrice, product.food_id);
     };
 
-  async function handleAddToCart() {
-      addToCart(
-            quantity,
-            totalPrice,
-            product.food_id 
-      )
-  }
+    async function handleAddToCart() {
+        addToCart(quantity, totalPrice, product.food_id
+        )
+        toast.success("Added to cart", {
+            duration: 5000,
+            style: {
+                background: "#1E7F3D", // match your green color
+                color: "white",
+                width: "1000vw",
+                borderRadius: "0px",
+                padding: "16px 0",
+                textAlign: "center",
+                fontSize: "18px",
+                fontWeight: "bold",
+            },
+        });
+    }
 
     return (
         <>
@@ -51,9 +62,9 @@ export default function Quantity({ product, handleBuyNow ,addToCart }) {
                     Total: £{totalPrice}
                 </p>
 
-                <button 
-                onClick={handleAddToCart}
-                className="btn bg-white border-1 text-black w-full h-12 flex items-center justify-center gap-2">
+                <button
+                    onClick={handleAddToCart}
+                    className="btn bg-white border-1 text-black w-full h-12 flex items-center justify-center gap-2">
                     <span>Add to Cart</span>
                     <CiShoppingCart className="w-6 h-6" />
                 </button>

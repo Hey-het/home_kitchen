@@ -7,10 +7,21 @@ import {
   SignedOut,
 } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
-export default async function NavBar() {
+
+
+export default async function NavBar({orderSumbit}) {
   const { userId } = await auth();
   const profile = "/profile/" + userId;
+  // const cartItems = await getCartItems(userId); 
+
+   const items = typeof orderSumbit === "function" ? await orderSumbit() : orderSumbit;
+    const totalItems = Array.isArray(items)
+        ? items.reduce((acc, item) => acc + Number(item.quantity || 1), 0)
+        : 0;
+   
+  
 
   return (
     <header className="border-b bg-white shadow-sm">
@@ -28,25 +39,21 @@ export default async function NavBar() {
         {/* Right side nav */}
         <div className="flex items-center gap-4">
           {/* Cart */}
-          <Link href="/cart">
-          <div className="relative group">
-            <button className="relative p-2 hover:text-gray-700 transition">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3c-.6.6-.2 1.7.7 1.7H17m0 0a2 2 0 100 4 2 2 0 000-4m-8 2a2 2 0 11-4 0 2 2 0 014 0" />
-              </svg>
-            </button>
-          </div>
-          </Link>
+          {/* <CartCount /> */}
+           {/* <CartCount cartCount={orderSumbit} /> */}
+            <Link
+                href="/cart"
+                className="relative inline-block"
+            >
+                <ShoppingCartIcon className="h-6 w-6" />
+                {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-2 bg-green-600 text-white text-xs font-bold rounded-full px-2 py-0.5 min-w-[1.25rem] text-center">
+                        {totalItems}
+                    </span>
+                )}
+            </Link>
 
+        
           {/* Profile */}
           <div className="relative group">
             <button className="h-10 w-10 overflow-hidden rounded-full border border-gray-300 transition">
@@ -68,16 +75,16 @@ export default async function NavBar() {
           </div>
 
           {/* Auth Buttons */}
-           <SignedIn> 
+          <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <SignedOut>
-            <SignInButton> 
+            <SignInButton>
               <button className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Sign In
               </button>
-            </SignInButton> 
-            <SignUpButton> 
+            </SignInButton>
+            <SignUpButton>
               <button className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Sign Up
               </button>
