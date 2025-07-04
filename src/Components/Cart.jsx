@@ -2,8 +2,11 @@
 "use client";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useState } from "react";
+import CheckoutForm from "./CheckoutForm";
+import Link from "next/link";
 
-export default function CartPage({ orderSumbit, placeOrder, deleteItem, quantityUpdate }) {
+
+export default function CartPage({ orderSumbit, placeOrder, deleteItem, quantityUpdate}) {
   const [cartItems, setCartItems] = useState(orderSumbit);
   const [quantity, setQuantity] = useState(orderSumbit.map(item => item.quantity || 1));
   // const totalPrice = orderSumbit.reduce((acc, item) => acc + item.total_price, 0);
@@ -80,8 +83,8 @@ const decrementQuantity = (index) => {
   }
 
   return (
-    <>
-      <h1 className="text-4xl ml-24 font-bold">Shopping Cart</h1>
+    <div className="pb-10">
+      <h1 className="text-4xl ml-24 font-bold pt-20 ">Shopping Cart</h1>
       <div className="flex flex-row space-x-4 m-10">
         {/* Cart Items */}
         <div className="w-[60%] border rounded-lg shadow-lg p-6 bg-white m-10">
@@ -172,65 +175,74 @@ const decrementQuantity = (index) => {
             <h2 className="text-lg mb-4">£{sum}</h2>
           </div>
           <br />
+         <Link href="/checkout">
           <button
             type="button"
             className="btn bg-black text-white w-full h-12"
-            onClick={() => setShowForm(true)}
+            // onClick={() => setShowForm(true)}
+            
           >
             Checkout
           </button>
+          </Link>
         </div>
       </div>
 
       {/* Profile Details Form */}
-      {showForm && (
-        <div className="fixed inset-0 bg-transparent bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded shadow-lg w-[400px]">
-            <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
-            <form onSubmit={handlePlaceOrder}>
-              <input
-                type="text"
-                name="fullName"
-                placeholder="Full Name"
-                value={profile.fullName}
-                onChange={handleFormChange}
-                className="input input-bordered w-full mb-2"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={profile.email}
-                onChange={handleFormChange}
-                className="input input-bordered w-full mb-2"
-                required
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number"
-                value={profile.phone}
-                onChange={handleFormChange}
-                className="input input-bordered w-full mb-4"
-                required
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="button"
-                  className="btn btn-outline"
-                  onClick={() => setShowForm(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Place Order
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
+      {/* {showForm && (
+        <CheckoutForm 
+         profile={profile}
+          setProfile={setProfile}
+          onCancel={() => setShowForm(false)}
+          onSubmit={handlePlaceOrder}
+        />
+        // <div className="fixed inset-0 bg-transparent bg-opacity-40 flex items-center justify-center z-50">
+        //   <div className="bg-white p-8 rounded shadow-lg w-[400px]">
+        //     <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
+        //     <form onSubmit={handlePlaceOrder}>
+        //       <input
+        //         type="text"
+        //         name="fullName"
+        //         placeholder="Full Name"
+        //         value={profile.fullName}
+        //         onChange={handleFormChange}
+        //         className="input input-bordered w-full mb-2"
+        //         required
+        //       />
+        //       <input
+        //         type="email"
+        //         name="email"
+        //         placeholder="Email"
+        //         value={profile.email}
+        //         onChange={handleFormChange}
+        //         className="input input-bordered w-full mb-2"
+        //         required
+        //       />
+        //       <input
+        //         type="tel"
+        //         name="phone"
+        //         placeholder="Phone Number"
+        //         value={profile.phone}
+        //         onChange={handleFormChange}
+        //         className="input input-bordered w-full mb-4"
+        //         required
+        //       />
+        //       <div className="flex justify-end space-x-2">
+        //         <button
+        //           type="button"
+        //           className="btn btn-outline"
+        //           onClick={() => setShowForm(false)}
+        //         >
+        //           Cancel
+        //         </button>
+        //         <button type="submit" className="btn btn-primary">
+        //           Place Order
+        //         </button>
+        //       </div>
+        //     </form>
+        //   </div>
+        // </div>
+      )} */}
+    </div>
   );
 }

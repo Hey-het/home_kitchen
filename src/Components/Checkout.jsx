@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function Checkout({ placeOrder, orderSumbit }) {
+export default function Checkout({ placeOrder, orderSumbit}) {
     console.log(orderSumbit)
     const [cartItems, setCartItems] = useState(orderSumbit)
     const [orderSuccess, setOrderSuccess] = useState(false);

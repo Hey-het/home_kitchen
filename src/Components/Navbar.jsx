@@ -84,11 +84,10 @@ export default async function NavBar({orderSumbit}) {
                 Sign In
               </button>
             </SignInButton>
-            <SignUpButton>
-              <button className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          
+              {/* <button className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Sign Up
-              </button>
-            </SignUpButton>
+              </button> */}
           </SignedOut>
         </div>
       </div>

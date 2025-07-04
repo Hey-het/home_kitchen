@@ -33,7 +33,7 @@ export default async function createPage({ params}) {
                 INSERT INTO customer(full_name, email, phone_number, user_id)
                 VALUES($1, $2, $3, $4)`, [items.fullName, items.email, items.phone, userId]);
 
-        await db.query(`DELETE FROM food_cart WHERE user_id = $1`, [userId]);
+        await db.query(`DELETE FROM cart WHERE user_id = $1`, [userId]);
 
     };
 

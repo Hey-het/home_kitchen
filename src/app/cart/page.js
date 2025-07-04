@@ -5,8 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 import NavBar from "@/Components/Navbar";
 
 
-
-
 export default async function cartPage(profile) {
     const { userId } = await auth();
     let foodId;
@@ -64,6 +62,7 @@ export default async function cartPage(profile) {
                 quantityUpdate={quantityUpdate}
                 placeOrder={placeOrderOnServer}
                 deleteItem={deleteCartItem}
+                 
         
             />
             
