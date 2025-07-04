@@ -1,6 +1,7 @@
 import NavBar from "@/Components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { } from "@heroicons/react/24/outline";
 
 export default function homePage() {
   return (
@@ -27,14 +28,18 @@ export default function homePage() {
 
       </div>
 
-      <div className="join mt-8 ml-24 space-x-4 flex justify-start items-center">
+      <div className="join mt-8 ml-20 flex justify-start items-center">
         <div className="flex flex-col group border-transparent w-fit  p-4 rounded-lg transition-all max-w-[400px]">
-          <Link href="/menu">
-          <img
-            src="https://media.istockphoto.com/id/1458973879/photo/rajasthani-traditional-cuisine-dal-baati.jpg?s=612x612&w=0&k=20&c=bBspCwj57CtdD0m66dZpNpNU_Dou3o7l1PscMUsijQc="
-            alt="Image 1"
-            className=" max-w-[400px]  max-h-[500px] object-cover group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 rounded-lg"
-          />
+          <Link href="/menu/dal-bati">
+            <div className="w-[300px] h-[300px] border-2 border-transparent rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="transition-transform duration-300 hover:scale-110">
+                <img
+                  src="https://media.istockphoto.com/id/1458973879/photo/rajasthani-traditional-cuisine-dal-baati.jpg?s=612x612&w=0&k=20&c=bBspCwj57CtdD0m66dZpNpNU_Dou3o7l1PscMUsijQc="
+                  alt="Dal Bati"
+                  className="w-[300px] h-[300px] object-cover rounded-md"
+                />
+              </div>
+            </div>
           </Link>
           <h3 className="mt-2 text-2xl">Dalbati</h3>
           <h3 className="text-xl font-medium text-gray-600">£6</h3>
@@ -42,19 +47,37 @@ export default function homePage() {
 
         <div className="flex flex-col group  border-transparent w-fit p-4 rounded-lg transition-all  max-w-[400px]">
           {/* <Link href="/menu"> */}
-          
-          <img
-            src="https://media.istockphoto.com/id/1327433011/photo/pav-bhaji-indian-street-food-bharuch-gujarat-india.jpg?s=612x612&w=0&k=20&c=R_Nl3Ig6qTNMidQkjXH0It8MINDJY-C5GMiIv-HxO04="
-            alt="Image 2"
-            className="  max-w-[400px]  max-h-[400px] object-cover group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 rounded-lg"
-          />
+          <Link href="/menu/pav-bhaji">
+            <div className="w-[300px] h-[300px] border-2 border-transparent rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="transition-transform duration-300 hover:scale-110">
+                <img
+                  src="https://media.istockphoto.com/id/1327433011/photo/pav-bhaji-indian-street-food-bharuch-gujarat-india.jpg?s=612x612&w=0&k=20&c=R_Nl3Ig6qTNMidQkjXH0It8MINDJY-C5GMiIv-HxO04="
+                  alt="Pav Bhaji"
+                  className="w-[300px] h-[300px] object-cover rounded-md"
+                />
+              </div>
+            </div>
+          </Link>
+
+
+
+
           {/* </Link> */}
           <h3 className="mt-2 text-2xl">Pavbhaji</h3>
           <h3 className="text-xl font-medium text-gray-600">£5</h3>
         </div>
       </div>
-      {/* <Link href="/menu" > */}
-        <p className="text-3xl p-20">Explore Products </p>
+      <Link href="/menu">
+        <p className="text-3xl p-20 flex items-center gap-2">
+          Explore Products
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+            className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </p>
+      </Link>
       {/* </Link> */}
     </>
   );

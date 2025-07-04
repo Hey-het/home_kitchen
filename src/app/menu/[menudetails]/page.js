@@ -51,7 +51,7 @@ export default async function MenuDetailsPage({ params}) {
         <>
             <div className="pt-8 ">
 
-                <Link href="/menu" className="font-semibold hover:underline ml-20 mr-2 ">
+                <Link href="/" className="font-semibold hover:underline ml-20 mr-2 ">
                     Home
                 </Link>
                 /
