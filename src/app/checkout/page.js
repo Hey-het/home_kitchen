@@ -34,6 +34,8 @@ export default async function createPage({ params}) {
                 VALUES($1, $2, $3, $4)`, [items.fullName, items.email, items.phone, userId]);
 
         await db.query(`DELETE FROM cart WHERE user_id = $1`, [userId]);
+        revalidatePath("/checkout");
+        redirect("/checkout")
 
     };
 

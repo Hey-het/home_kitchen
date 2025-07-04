@@ -33,6 +33,8 @@ export default async function MenuDetailsPage({ params }) {
       [quantity, total_price, food_id, userId]
     );
     console.log("Data inserted successfully");
+      revalidatePath('/cart');
+    redirect('/cart');
   }
 
   return (
