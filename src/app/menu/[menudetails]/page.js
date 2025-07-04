@@ -10,117 +10,87 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
-export default async function MenuDetailsPage({ params}) {
-    const { menudetails } = await params;
-    // console.log(params)
-    // console.log({menudetails})
+export default async function MenuDetailsPage({ params }) {
+  const { menudetails } = await params;
+  const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
 
-
-    const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
-    // console.log("Food Items:", food_items[0][0]);
-
-    async function insertData(quantity, total_price, food_id,) {
-        "use server"
-        const { userId } = await auth();
-        // console.log("UserId:", userId);
-        await db.query(
-            `INSERT INTO cart (quantity,total_price,food_id,user_id) 
-             VALUES ($1, $2, $3,$4)`,
-            [quantity, total_price, food_id, userId]
-        );
-        revalidatePath('/checkout');
-        redirect('/checkout');
-
-    }
-      async function insertCart(quantity, total_price, food_id) {
-        "use server"
-        const { userId } = await auth();
-        // console.log("UserId:", userId);
-        await db.query(
-            `INSERT INTO cart (quantity,total_price,food_id,user_id) 
-             VALUES ($1, $2, $3,$4)`,
-            [quantity, total_price, food_id, userId]
-        );
-        // revalidatePath('/c');
-        // redirect('/checkout');
-        console.log("Data inserted successfully");
-
-    }
-
-    return (
-        <>
-            <div className="pt-8 ">
-
-                <Link href="/" className="font-semibold hover:underline ml-20 mr-2 ">
-                    Home
-                </Link>
-                /
-                <Link href="/menu" className="font-semibold hover:underline  ml-2 mr-2 ">
-                Products
-                </Link>
-                /
-                  <Link href="/menu" className="font-semibold hover:underline  ml-2 mr-2 ">
-                My Shelf
-                </Link>
-                /
-                   <Link href="" className="font-light hover:underline  ml-2 mr-2 ">
-                    {food_items[0].prod_name}
-                </Link>
-                
-            </div>
-
-
-            <div className="p-8 space-y-8">
-                <div className="flex flex-row ">
-                    <div className="w-[50%]">
-                        <Image
-                            className="rounded-lg hover:scale-105 duration-300"
-                            src={food_items[0].img_src}
-                            alt={food_items[0].prod_name}
-                            width={500}
-                            height={1000}
-                        />
-                    </div>
-                    <div className="ml-6 w-[50%]">
-                        <h1 className="text-5xl font-bold">{food_items[0].prod_name}</h1>
-                        <h2 className="text-4xl font-bold">£{food_items[0].unit_price}</h2>
-                        <div className="flex flex-col">
-
-                            <Quantity
-                                product={food_items[0]}
-                                handleBuyNow={insertData}
-                                addToCart={insertCart}
-                            />
-                            <br />
-{/*                             
-                            <button type="submit" className="btn bg-white border-1 text-black w-full h-12 flex items-center justify-center gap-2">
-                                <span>Add to Cart</span>
-                                <CiShoppingCart className="w-6 h-6" />
-                            </button> */}
-                        </div>
-                        <br />
-                        <h2 className="text-sm font-extralight">Share</h2>
-                        <div className="flex flex-row space-x-2 mt-4">
-                            <a href="https://www.facebook.com/XdW2Q4yhuQxkkc5x " className="text-xl">
-                                <ImFacebook2 />
-                            </a>
-                            <a href="https://www.instagram.com/hetalshomekitchen/" className="text-xl">
-                                <BsInstagram />
-                            </a>
-                            <a href="https://api.whatsapp.com/send/?phone=%2B447928042962&text&type=phone_number&app_absent=0" className="text-xl">
-                                <RiWhatsappFill />
-                            </a>
-                        </div>
-                        <br />
-                        <br />
-                        <h2 className="text-gray-700 text-sm leading-relaxed text-wrap">
-                            {food_items[0].description}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-        </>
-
+  async function insertData(quantity, total_price, food_id) {
+    "use server";
+    const { userId } = await auth();
+    await db.query(
+      `INSERT INTO cart (quantity,total_price,food_id,user_id) VALUES ($1, $2, $3,$4)`,
+      [quantity, total_price, food_id, userId]
     );
+    revalidatePath('/checkout');
+    redirect('/checkout');
+  }
+
+  async function insertCart(quantity, total_price, food_id) {
+    "use server";
+    const { userId } = await auth();
+    await db.query(
+      `INSERT INTO cart (quantity,total_price,food_id,user_id) VALUES ($1, $2, $3,$4)`,
+      [quantity, total_price, food_id, userId]
+    );
+    console.log("Data inserted successfully");
+  }
+
+  return (
+    <>
+      <div className="pt-8 px-6 sm:px-20">
+        <nav className="text-sm font-medium text-gray-700 mb-6 flex flex-wrap gap-x-2 gap-y-1">
+          <Link href="/" className="hover:underline text-blue-600">Home</Link>
+          <span>/</span>
+          <Link href="/menu" className="hover:underline text-blue-600">Products</Link>
+          <span>/</span>
+          <Link href="/menu" className="hover:underline text-blue-600">My Shelf</Link>
+          <span>/</span>
+          <span className="text-gray-500">{food_items[0].prod_name}</span>
+        </nav>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="lg:w-1/2 w-full">
+            <Image
+              className="rounded-lg hover:scale-105 duration-300 shadow-lg"
+              src={food_items[0].img_src}
+              alt={food_items[0].prod_name}
+              width={500}
+              height={500}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+
+          <div className="lg:w-1/2 w-full flex flex-col">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-3">{food_items[0].prod_name}</h1>
+            <h2 className="text-3xl sm:text-4xl font-semibold mb-6">£{food_items[0].unit_price}</h2>
+
+            <Quantity
+              product={food_items[0]}
+              handleBuyNow={insertData}
+              addToCart={insertCart}
+            />
+
+            <div className="mt-8">
+              <h2 className="text-sm font-extralight mb-2">Share</h2>
+              <div className="flex gap-4 text-xl text-gray-600">
+                <a href="https://www.facebook.com/XdW2Q4yhuQxkkc5x" aria-label="Facebook" className="hover:text-blue-600 transition">
+                  <ImFacebook2 />
+                </a>
+                <a href="https://www.instagram.com/hetalshomekitchen/" aria-label="Instagram" className="hover:text-pink-500 transition">
+                  <BsInstagram />
+                </a>
+                <a href="https://api.whatsapp.com/send/?phone=%2B447928042962&text&type=phone_number&app_absent=0" aria-label="WhatsApp" className="hover:text-green-500 transition">
+                  <RiWhatsappFill />
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-8 text-gray-700 text-base leading-relaxed whitespace-pre-wrap">
+              {food_items[0].description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
