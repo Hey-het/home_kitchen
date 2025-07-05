@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
 export default function Checkout({ placeOrder, orderSumbit}) {
-    console.log(orderSumbit)
+    // console.log(orderSumbit)
     const [cartItems, setCartItems] = useState(orderSumbit)
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [profile, setProfile] = useState({

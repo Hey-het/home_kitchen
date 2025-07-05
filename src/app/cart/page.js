@@ -49,7 +49,7 @@ export default async function cartPage(profile) {
             `UPDATE cart SET quantity = $1, total_price = $2 WHERE id = $3 AND user_id = $4`,
             [items.quantity, items.total_price, items.id, userId]
         );
-        console.log("Quantity updated successfully");
+        // console.log("Quantity updated successfully");
         // revalidatePath('/cart');
     }
 

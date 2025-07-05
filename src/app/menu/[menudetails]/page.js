@@ -3,7 +3,6 @@ import Image from "next/image";
 import { ImFacebook2 } from "react-icons/im";
 import { BsInstagram } from "react-icons/bs";
 import { RiWhatsappFill } from "react-icons/ri";
-import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import Quantity from "@/Components/Quantity";
 import { revalidatePath } from "next/cache";
@@ -32,7 +31,7 @@ export default async function MenuDetailsPage({ params }) {
       `INSERT INTO cart (quantity,total_price,food_id,user_id) VALUES ($1, $2, $3,$4)`,
       [quantity, total_price, food_id, userId]
     );
-    console.log("Data inserted successfully");
+    // console.log("Data inserted successfully");
       revalidatePath('/cart');
     redirect('/cart');
   }

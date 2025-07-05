@@ -1,5 +1,3 @@
-import Checkout from "@/Components/Checkout";
-import Serch from "@/Components/Serch";
 import { db } from "@/utils/dbConnection";
 import Image from "next/image";
 import Link from "next/link";
