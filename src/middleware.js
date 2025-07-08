@@ -1,26 +1,26 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
 
-const isPublicRoute = createRouteMatcher([  "/",
-  // "/cart(.*)",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/menu",
-  // "/menu(.*)",
-  // "/checkoutForm"
-  
-]);
+export default async function middleware(request) {
+  const response = NextResponse.next();
+  const sessionId = request.cookies.get("session_id")?.value;
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
+  // If no session_id cookie, generate and set one
+  if (!sessionId) {
+    const newSessionId = uuidv4();
+    response.cookies.set("session_id", newSessionId, {
+      path: "/",
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
   }
-});
+
+  return response;
+}
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };

@@ -36,17 +36,17 @@ export default function CartPage({ orderSumbit, placeOrder, deleteItem, quantity
 
   const sum = cartItems.reduce((acc, item) => acc + item.unit_price * (item.quantity || 1), 0);
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
-  };
+  // const handleFormChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setProfile({ ...profile, [name]: value });
+  // };
 
-  const handlePlaceOrder = (e) => {
-    e.preventDefault();
-    setShowForm(false);
-    placeOrder(profile, cartItems);
-    setCartItems([]);
-  };
+  // const handlePlaceOrder = (e) => {
+  //   e.preventDefault();
+  //   setShowForm(false);
+  //   placeOrder(profile, cartItems);
+  //   setCartItems([]);
+  // };
 
   return (
     <div className="pb-10 px-4 md:px-10">

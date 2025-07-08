@@ -8,17 +8,26 @@ import Quantity from "@/Components/Quantity";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
+
 
 export default async function MenuDetailsPage({ params }) {
   const { menudetails } = await params;
   const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
 
+
+     const cookieStore = await cookies(); // ✅
+  const sessionId = cookieStore.get("session_id")?.value;
+
   async function insertData(quantity, total_price, food_id) {
     "use server";
-    const { userId } = await auth();
+    // const { userId } = await auth();
+
+    if (!sessionId) throw new Error("Session ID missing");
+
     await db.query(
-      `INSERT INTO cart (quantity,total_price,food_id,user_id) VALUES ($1, $2, $3,$4)`,
-      [quantity, total_price, food_id, userId]
+      `INSERT INTO cart (quantity, total_price, food_id, session_id) VALUES ($1, $2, $3, $4)`,
+      [quantity, total_price, food_id, sessionId]
     );
     revalidatePath('/checkout');
     redirect('/checkout');
@@ -26,13 +35,17 @@ export default async function MenuDetailsPage({ params }) {
 
   async function insertCart(quantity, total_price, food_id) {
     "use server";
-    const { userId } = await auth();
+    // const { userId } = await auth();
+   
+
+    if (!sessionId) throw new Error("Session ID missing");
+
     await db.query(
-      `INSERT INTO cart (quantity,total_price,food_id,user_id) VALUES ($1, $2, $3,$4)`,
-      [quantity, total_price, food_id, userId]
+      `INSERT INTO cart (quantity,total_price,food_id,session_id) VALUES ($1, $2, $3,$4)`,
+      [quantity, total_price, food_id, sessionId]
     );
     // console.log("Data inserted successfully");
-      revalidatePath('/cart');
+    revalidatePath('/cart');
     redirect('/cart');
   }
 

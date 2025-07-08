@@ -6,7 +6,7 @@ import FooterPage from "@/Components/Footer";
 import Footer2 from "@/Components/Footer2";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
-import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers"; // get cookies in server components
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,16 +20,19 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: " Hetal's Home Kitchen",
- icons: {
+  icons: {
     icon: '/favicon.ico',
   },
 };
 
 export default async function RootLayout({ children }) {
-   const { userId } = await auth();
+  // Get the guest session_id cookie from cookies
+  const cookieStore = await cookies();
+  const sessionId =  cookieStore.get("session_id")?.value;
 
   let cartItems = [];
-  if (userId) {
+
+  if (sessionId) {
     cartItems = (
       await db.query(
         `
@@ -37,31 +40,32 @@ export default async function RootLayout({ children }) {
           cart.id,
           cart.quantity,
           cart.total_price,
-          cart.user_id,
+          cart.session_id,
           food_items.img_src,
           food_items.unit_price,
           food_items.prod_name
         FROM cart
         JOIN food_items ON cart.food_id = food_items.food_id 
-        WHERE cart.user_id = $1`,
-        [userId]
+        WHERE cart.session_id = $1
+      `,
+        [sessionId]
       )
     ).rows;
   }
+
   return (
-     <ClerkProvider>
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <NavBar orderSumbit={cartItems} />
-        {children}
+          {children}
           <Toaster position="top-center" />
-          
-          <FooterPage/>
-        <Footer2 />
-      </body>
-    </html>
-     </ClerkProvider>
+          <FooterPage />
+          <Footer2 />
+        </body>
+      </html>
+    
   );
 }
