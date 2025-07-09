@@ -34,7 +34,7 @@ export default async function MenuDetailsPage({ params }) {
   async function insertCart(quantity, total_price, food_id) {
     "use server";
     // const { userId } = await auth();
-   
+
 
     if (!sessionId) throw new Error("Session ID missing");
 
@@ -50,7 +50,7 @@ export default async function MenuDetailsPage({ params }) {
   return (
     <>
       <div className="pt-8 px-6 sm:px-20">
-        <nav className="text-sm font-medium text-gray-700 mb-6 flex flex-wrap gap-x-2 gap-y-1">
+        <nav className="text-sm font-medium text-gray-00 mb-6 flex flex-wrap gap-x-2 gap-y-1">
           <Link href="/" className="hover:underline text-blue-600">Home</Link>
           <span>/</span>
           <Link href="/menu" className="hover:underline text-blue-600">Products</Link>
@@ -61,16 +61,17 @@ export default async function MenuDetailsPage({ params }) {
         </nav>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-1/2 w-full">
+          <div className="lg:w-1/2 w-full flex justify-center">
             <Image
-              className="rounded-lg hover:scale-105 duration-300 shadow-lg"
+              className="object-cover"
               src={food_items[0].img_src}
               alt={food_items[0].prod_name}
-              width={500}
-              height={500}
-              style={{ width: "100%", height: "auto" }}
+              width={200}   // base width for image loader (doesn't restrict CSS)
+              height={400}  // increased height here
+              style={{ width: "400px", height: "600px" }}  // smaller width, larger height fixed via inline style
             />
           </div>
+
 
           <div className="lg:w-1/2 w-full flex flex-col">
             <h1 className="text-4xl sm:text-5xl font-bold mb-3">{food_items[0].prod_name}</h1>

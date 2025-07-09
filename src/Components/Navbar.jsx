@@ -18,7 +18,7 @@ export default async function NavBar({ orderSumbit,products }) {
     : 0;
 
   return (
-    <header className="border-b bg-white shadow-sm pb-5 ">
+    <header className="border-b border-b-gray-300 bg-white shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-8">
         {/* Left side nav */}
         <div className="flex justify-center gap-6">
