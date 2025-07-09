@@ -7,7 +7,6 @@ import Link from "next/link";
 import Quantity from "@/Components/Quantity";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 
 
@@ -15,8 +14,7 @@ export default async function MenuDetailsPage({ params }) {
   const { menudetails } = await params;
   const food_items = (await db.query(`SELECT * FROM food_items WHERE route_name=$1`, [menudetails])).rows;
 
-
-     const cookieStore = await cookies(); // ✅
+  const cookieStore = await cookies(); // ✅
   const sessionId = cookieStore.get("session_id")?.value;
 
   async function insertData(quantity, total_price, food_id) {

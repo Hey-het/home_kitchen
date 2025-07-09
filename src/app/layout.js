@@ -4,7 +4,6 @@ import { db } from "@/utils/dbConnection";
 import NavBar from "@/Components/Navbar";
 import FooterPage from "@/Components/Footer";
 import Footer2 from "@/Components/Footer2";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import { cookies } from "next/headers"; // get cookies in server components
 
@@ -53,13 +52,16 @@ export default async function RootLayout({ children }) {
     ).rows;
   }
 
+    const products = (await db.query("SELECT * FROM food_items")).rows;
+  
+
   return (
     
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <NavBar orderSumbit={cartItems} />
+          <NavBar orderSumbit={cartItems} products={products} />
           {children}
           <Toaster position="top-center" />
           <FooterPage />

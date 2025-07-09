@@ -1,16 +1,13 @@
 import Link from "next/link";
-// import {
-//   UserButton,
-//   SignInButton,
-//   SignedIn,
-//   SignedOut,
-// } from "@clerk/nextjs";
 import { cookies } from "next/headers";
-import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Search from "./Search";
 
-export default async function NavBar({ orderSumbit }) {
-  const cookieStore =await cookies();
-  const sessionId =  cookieStore.get("session_id")?.value;
+
+export default async function NavBar({ orderSumbit,products }) {
+
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get("session_id")?.value;
 
   const profile = "/profile/" + sessionId;  // replaced userId with sessionId
 
@@ -21,10 +18,10 @@ export default async function NavBar({ orderSumbit }) {
     : 0;
 
   return (
-    <header className="border-b bg-white shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <header className="border-b bg-white shadow-sm pb-5 ">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-8">
         {/* Left side nav */}
-        <div className="flex items-center gap-6">
+        <div className="flex justify-center gap-6">
           <Link href="/" className="font-semibold hover:underline ml-2 mr-2">
             Home
           </Link>
@@ -34,8 +31,11 @@ export default async function NavBar({ orderSumbit }) {
         </div>
 
         {/* Right side nav */}
-        <div className="flex items-center gap-4">
-          {/* Cart */}
+        <div className="flex items-center gap-4 ">
+          {/* Search icon (first) */}
+          <Search  products={products}/>
+
+          {/* Cart (second) */}
           <Link href="/cart" className="relative inline-block">
             <ShoppingCartIcon className="h-6 w-6" />
             {totalItems > 0 && (
@@ -44,41 +44,9 @@ export default async function NavBar({ orderSumbit }) {
               </span>
             )}
           </Link>
-
-          {/* Profile */}
-          <div className="relative group">
-            <button className="h-10 w-10 overflow-hidden rounded-full border border-gray-300 transition">
-              <img
-                alt="User avatar"
-                src="https://cdn.sumup.store/shops/81731664/settings/th240/11f10fe2-e928-4c55-9da0-c1a9ebed8a68.jpeg"
-                className="h-full w-full object-cover"
-              />
-            </button>
-
-            <div className="absolute right-0 z-20 mt-2 hidden w-40 rounded-md border bg-white p-2 shadow-md group-hover:block transition">
-              <Link href={profile}>
-                <div className="flex justify-between items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md cursor-pointer">
-                  <span>Profile</span>
-                  <span className="ml-2 rounded bg-green-100 px-2 py-0.5 text-xs text-green-800">
-                    New
-                  </span>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Auth Buttons */}
-          {/* <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton>
-              <button className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Sign In
-              </button>
-            </SignInButton>
-          </SignedOut> */}
         </div>
+
+
       </div>
     </header>
   );

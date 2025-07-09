@@ -36,7 +36,7 @@ export default function homePage() {
         </div>
       </div>
     </Link>
-    <h3 className="mt-2 text-xl sm:text-2xl">Dalbati</h3>
+    <h3 className="mt-2 text-xl sm:text-2xl">Dal Bati</h3>
     <h3 className="text-md sm:text-xl font-medium text-gray-600">£6</h3>
   </div>
 
@@ -53,7 +53,7 @@ export default function homePage() {
         </div>
       </div>
     </Link>
-    <h3 className="mt-2 text-xl sm:text-2xl">Pavbhaji</h3>
+    <h3 className="mt-2 text-xl sm:text-2xl">Pav Bhaji</h3>
     <h3 className="text-md sm:text-xl font-medium text-gray-600">£5</h3>
   </div>
 </div>
