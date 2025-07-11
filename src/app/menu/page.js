@@ -1,3 +1,4 @@
+import RegionProduct from "@/Components/RegionProduct";
 import SortDropdown from "@/Components/SortDropdown";
 import { db } from "@/utils/dbConnection";
 import Link from "next/link";
@@ -6,27 +7,38 @@ export default async function menuPage({searchParams}) {
   const foodItems = (await db.query(`SELECT * FROM food_items`)).rows;
   
   const Params = await searchParams;
-    const sort = Params.sort;
+    const sort = Params.sort ;
+    const  region =Params.region;
 
   let query = "SELECT * FROM food_items";
+  const values = [];
 
-  switch (sort) {
-    case "a-z":
-      query += " ORDER BY prod_name ASC";
-      break;
-    case "z-a":
-      query += " ORDER BY prod_name DESC";
-      break;
-    case "low-price":
-      query += " ORDER BY unit_price ASC";
-      break;
-    case "high-price":
-      query += " ORDER BY unit_price DESC";
-      break;
-    default:
-      break;
+  if (region) {
+    values.push(region);
+    query += ` WHERE region = $1`;
   }
-   const sortedFoodItems = (await db.query(query)).rows;
+
+  // Add sort conditions
+  if (sort) {
+    switch (sort) {
+      case "a-z":
+        query += region ? " ORDER BY prod_name ASC" : " ORDER BY prod_name ASC";
+        break;
+      case "z-a":
+        query += region ? " ORDER BY prod_name DESC" : " ORDER BY prod_name DESC";
+        break;
+      case "low-price":
+        query += region ? " ORDER BY unit_price ASC" : " ORDER BY unit_price ASC";
+        break;
+      case "high-price":
+        query += region ? " ORDER BY unit_price DESC" : " ORDER BY unit_price DESC";
+        break;
+      default:
+        break;
+    }
+  }
+
+  const sortedFoodItems = (await db.query(query, values)).rows;
 
   return (
     <>
@@ -44,11 +56,7 @@ export default async function menuPage({searchParams}) {
                       {/* Category Dropdown */}
                       <div>
                         <label className="block text-sm font-medium">Categories</label>
-                        <select className="border border-gray-300 font-bold px-4 py-2 w-3xs ">
-                          <option>All</option>
-                          <option>Snacks</option>
-                          <option>Drinks</option>
-                        </select>
+                       <RegionProduct/>
                       </div>
 
                       {/* Sort Dropdown */}

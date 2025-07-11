@@ -1,21 +1,23 @@
 "use client";
-
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SortDropdown() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleChange = (e) => {
     const value = e.target.value;
-    router.push(`/menu?sort=${value}`);
+    const region = searchParams.get("region") || "";
+    router.push(`/menu?sort=${value}&region=${region}`);
   };
 
   return (
-    <select onChange={handleChange} className="border border-gray-300 font-bold px-4 py-2 w-3xs mr-5">
-      <option value="a-z">Name A–Z</option>
-      <option value="z-a">Name Z–A</option>
-      <option value="low-price">Lowest Price</option>
-      <option value="high-price">Highest Price</option>
+    <select onChange={handleChange} className="border px-4 py-2 font-bold mr-5">
+      <option value="">Sort</option>
+      <option value="a-z">A-Z</option>
+      <option value="z-a">Z-A</option>
+      <option value="low-price">Low to High</option>
+      <option value="high-price">High to Low</option>
     </select>
   );
 }
